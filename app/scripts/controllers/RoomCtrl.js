@@ -1,6 +1,6 @@
 (function() {
   function RoomCtrl($scope, Room) {
-    this.rooms = [1,2,3];
+    this.rooms = Room.all;
   }
 
   angular
