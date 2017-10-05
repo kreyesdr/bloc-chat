@@ -20,5 +20,9 @@
                 <div class="message-content">{{ message.content }}</div>
             </div>
         </div>
+        <div class="send-message" ng-show="room.currentRoom">
+            <input id="message-text" type="text" placeholder="Insert message..." ng-model="room.messages.newMessage">
+            <button type="button" ng-click="room.messages.send(room.messages.newMessage, room.currentRoom)">Send</button>
+        </div>
     </main>
 </div>

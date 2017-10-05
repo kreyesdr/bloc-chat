@@ -1,35 +1,38 @@
 (function(){
-    function Message($firebaseArray){
-        /**
-        * @desc Message empty object
-        * @type {Object}
-        */
+    function Message($firebaseArray, $cookies){
+
         var Message = {};
-        /**
-        * @desc Reference to the list of databases in the messages database
-        * @type {Object}
-        */
+
         var ref = firebase.database().ref().child("messages");
         var messages = $firebaseArray(ref);
 
         Message.getByRoomId = function(roomId){
-            var roomMessages = $firebaseArray(ref.orderByChild("roomid").equalTo(roomId));
-            var result = [];
-            roomMessages.$loaded().then(function(){
-                angular.forEach(roomMessages, function(messages){
-                    result.push(messages);
-                })
-            });
-
-            debugger;
-
-            return result;
+            return $firebaseArray(ref.orderByChild("roomId").equalTo(roomId));
         }
+
+        Message.send = function(newMessage, room){
+        var username = $cookies.get('blocChatCurrentUser');
+        var currentTime = new Date();
+        var messageObj = {
+            "content": newMessage,
+            "roomId": room.$id,
+            "sentAt": currentTime.getTime(),
+            "username": username
+        };
+
+        messages.$add(messageObj).then(function(ref){
+            var id = ref.key;
+            console.log("added record with id " + id);
+            messages.$indexFor(id);
+        });
+        debugger;
+        document.getElementById("message-text").value = '';
+    };
 
         return Message;
     }
 
     angular
         .module('blocChat')
-        .factory('Message', ['$firebaseArray', Message]);
+        .factory('Message', ['$firebaseArray', '$cookies', Message]);
 })();
