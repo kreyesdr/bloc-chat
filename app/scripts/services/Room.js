@@ -4,6 +4,7 @@
     var ref = firebase.database().ref().child("rooms");
     var rooms = $firebaseArray(ref);
 
+    Room.currentMessages = null;
     Room.all = rooms;
 
     Room.add = function(room) {

@@ -1,13 +1,24 @@
-<div class="vertical-bg">
-  <div class="col-lg-2 bg-grey">
-    <h1>Bloc Chat</h1>
-    <div class="btn-group">
-      <button type="button" class="btn btn-default pull-right glyphicon glyphicon-plus"  ng-click="room.addNew()"></button>
+<div class="home-view">
+    <div class="side-menu">
+        <h1>Bloc Chat</h1>
+        <div>
+            <button ng-click="room.addNew()" type="button">New room</button>
+        </div>
+
+        <div class="room-link" ng-repeat="data in room.rooms track by $index">
+            <div ng-click="room.setActiveRoom(data)">{{data.$value}}</div>
+        </div>
     </div>
-    <ul>
-      <li ng-repeat="data in room.rooms track by $index">
-        {{ data.$value }}
-      </li>
-    </ul>
-  </div>
+    <main class="message-content">
+        <h3 class="room-header">
+            {{ room.currentRoom.$value }}
+        </h3>
+        <div class="room-messages">
+            <div class="message" ng-repeat="message in room.currentRoom.currentMessages">
+                <div class="message-username">{{ message.username }}</div>
+                <div class="message-timestamp">{{ message.sentAt }}</div>
+                <div class="message-content">{{ message.content }}</div>
+            </div>
+        </div>
+    </main>
 </div>
